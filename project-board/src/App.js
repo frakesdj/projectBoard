@@ -64,7 +64,7 @@ function App() {
         prev = {...prev}
       })
   }
- //comment for git test
+ //comment for git tester
   return (
     <div className="App">
       <DragDropContext onDragEnd={handleDragEnd}>
