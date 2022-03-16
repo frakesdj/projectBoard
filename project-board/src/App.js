@@ -59,9 +59,15 @@ function App() {
     })
   }
 
-  function updateDes (des, el) {
-      setState(prev => {
+  function updateDes (des, index, key) {
+
+    console.log(state[key].items);
+    const itemCopy = {...state[key].items[index]}
+
+    setState(prev => {
         prev = {...prev}
+        prev[key].items[index].description = des.target.value;
+        return prev;
       })
   }
  //comment for git tester
@@ -84,7 +90,6 @@ function App() {
                         return(
                           <Draggable key={el.id} index={index} draggableId={el.id}>
                             {(provided, snapshot) => {
-                              console.log(snapshot)
                               return(
 
                                 <div
@@ -100,7 +105,7 @@ function App() {
                                     type="text"
                                     id="tagBar"
                                     value={el.description}
-                                    onChange={(e) => this.props.updateDes(el.description, el)}
+                                    onChange={(e) => updateDes(e, index, key)}
                                   />
 
                                 </div>
