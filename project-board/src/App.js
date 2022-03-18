@@ -8,13 +8,15 @@ import React, {useState}  from "react";
 const item = {
   id: v4(),
   name: "Clean the house",
-  description: "dddd"
+  description: "dddd",
+  editable: false
 }
 
 const item2 = {
   id: v4(),
   name: "Wash the car",
-  description: ""
+  description: "",
+  editable: false
 }
 
 function App() {
@@ -58,8 +60,7 @@ function App() {
       return prev
     })
   }
-
-  function updateDes (des, index, key) {
+    function updateDes(des, index, key)  {
 
     console.log(state[key].items);
     const itemCopy = {...state[key].items[index]}
@@ -70,6 +71,23 @@ function App() {
         return prev;
       })
   }
+
+  function toggleTask (el, key, index) {
+    const itemCopy = {...state[key].items[index]}
+    itemCopy.editable = !itemCopy.editable;
+    setState(prev => {
+      prev = {...prev}
+      // Remove from previous items array
+      prev[key].items.splice(index, 1)
+
+
+      // Adding to new items array location
+      prev[key].items.splice(index, 0, itemCopy)
+
+      return prev;
+    })
+  }
+
  //comment for git tester
   return (
     <div className="App">
@@ -92,21 +110,25 @@ function App() {
                             {(provided, snapshot) => {
                               return(
 
+
                                 <div
                                   className={`item ${snapshot.isDragging && "dragging"}`}
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                 >
-                  
+
                                   {el.name}
                                   
-                                  <input
+                                  <button onClick={() => toggleTask(el, key, index)}>
+                                  here
+                                  </button>
+                                  {el.editable === true ? (<p>{el.description}</p>) : (                                  <input
                                     type="text"
                                     id="tagBar"
                                     value={el.description}
                                     onChange={(e) => updateDes(e, index, key)}
-                                  />
+                                  />)}
 
                                 </div>
                               
