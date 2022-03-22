@@ -26,7 +26,7 @@ function App() {
       title: "Todo",
       items: [item, item2]
     },
-    "in-progress": {
+    "inprogress": {
       title: "In Progress",
       items: []
     },
@@ -72,6 +72,18 @@ function App() {
       })
   }
 
+  function updateName(nam, index, key)  {
+
+    console.log(state[key].items);
+    const itemCopy = {...state[key].items[index]}
+
+    setState(prev => {
+        prev = {...prev}
+        prev[key].items[index].name = nam.target.value;
+        return prev;
+      })
+  }
+
   function toggleTask (el, key, index) {
     const itemCopy = {...state[key].items[index]}
     itemCopy.editable = !itemCopy.editable;
@@ -87,6 +99,67 @@ function App() {
       return prev;
     })
   }
+
+  function addTask(key){
+    if (key === "todo")
+    {
+      setState(prev => {
+      return {
+        ...prev,
+        todo: {
+          title: "Todo",
+          items: [
+            ...prev.todo.items,
+            {
+              id: v4(),
+              name: "",
+              description: "",
+              editable: false
+            }
+          ]
+        }
+      }})
+    }
+    else if (key === "inprogress")
+    {
+      setState(prev => {
+        return {
+          ...prev,
+          "inprogress": {
+            title: "In Progress",
+            items: [
+              ...prev.inprogress.items,
+              {
+                id: v4(),
+                name: "",
+                description: "",
+                editable: false
+              }
+            ]
+          }
+        }})
+    }
+    else
+    {
+      setState(prev => {
+        return {
+          ...prev,
+          "done": {
+            title: "Completed",
+            items: [
+              ...prev.done.items,
+              {
+                id: v4(),
+                name: "",
+                description: "",
+                editable: false
+              }
+            ]
+          }
+        }})
+    }
+    }
+
 
  //comment for git tester
   return (
@@ -118,17 +191,28 @@ function App() {
                                   {...provided.dragHandleProps}
                                 >
 
-                                  {el.name}
+                                
                                   
                                   <button onClick={() => toggleTask(el, key, index)}>
                                   here
                                   </button>
-                                  {el.editable === true ? (<p>{el.description}</p>) : (                                  <input
-                                    type="text"
-                                    id="tagBar"
-                                    value={el.description}
-                                    onChange={(e) => updateDes(e, index, key)}
-                                  />)}
+                                  {el.editable !== true ? (
+                                  <p>{el.name}
+                                     {el.description}</p>) : (
+                                    <div>   
+                                       <input
+                                      type="text"
+                                      id="namBar"
+                                      value={el.name}
+                                      onChange={(e) => updateDes(e, index, key)}/>
+
+                                       <input
+                                       type="text"
+                                       id="tagBar"
+                                       value={el.description}
+                                       onChange={(e) => updateDes(e, index, key)}/>                                    
+                                    </div>
+                                  )}
 
                                 </div>
                               
@@ -142,6 +226,9 @@ function App() {
                   )
                 }}
               </Droppable>
+              <button onClick={() => addTask(key)}>
+              +
+              </button>
             </div>
           )
         })}
