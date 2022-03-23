@@ -60,7 +60,14 @@ function App() {
       return prev
     })
   }
-    function updateDes(des, index, key)  {
+
+  function deleteTask(index, key) {
+    var array = {...state};
+    array[key].items.splice(index, 1);
+    setState(array);
+  }
+
+  function updateDes(des, index, key)  {
 
     console.log(state[key].items);
     const itemCopy = {...state[key].items[index]}
@@ -197,20 +204,24 @@ function App() {
                                   here
                                   </button>
                                   {el.editable !== true ? (
-                                  <p>{el.name}
+                                  <p>{el.name} <br></br>
                                      {el.description}</p>) : (
                                     <div>   
                                        <input
                                       type="text"
                                       id="namBar"
                                       value={el.name}
-                                      onChange={(e) => updateDes(e, index, key)}/>
+                                      onChange={(e) => updateName(e, index, key)}/>
 
                                        <input
                                        type="text"
                                        id="tagBar"
                                        value={el.description}
-                                       onChange={(e) => updateDes(e, index, key)}/>                                    
+                                       onChange={(e) => updateDes(e, index, key)}/>
+
+                                       <button onClick={() => deleteTask(index, key)}>
+                                        delete
+                                       </button>                                    
                                     </div>
                                   )}
 
